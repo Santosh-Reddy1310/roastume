@@ -3,6 +3,7 @@ import fitz
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os
+import time
 
 from utils.parse_resume import extract_text_from_pdf
 from utils.ats_score import compute_ats_score
@@ -74,7 +75,16 @@ if uploaded_file:
     st.markdown("## 🤖 AI’s Feedback")
     with st.spinner("Roasting your resume..."):
         prompt = TONE_PROMPTS[tone].replace("{text}", resume_text)
-        response = model.generate_content(prompt)
+        try:
+            response = model.generate_content(prompt)
+        except Exception as e:
+            if "429" in str(e):
+                st.warning("⚠️ Gemini API rate limit hit. Please wait a few seconds and try again.")
+                st.caption("Free tier allows ~15 requests per minute. Upgrade if needed.")
+                time.sleep(15)  # Optional delay
+            else:
+                st.error("💥 Gemini API call failed.")
+                st.exception(e)
         st.markdown(f"""<div class="roast-card"><h4>🗣️ Feedback – <span style='color:#4ade80'>{tone}</span></h4><p>{response.text.replace('\n', '<br>')}</p></div>""", unsafe_allow_html=True)
 
     st.markdown("## ✨ Download AI-Improved Resume")
