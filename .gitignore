@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Streamlit config
+.streamlit/
+
+# Env files
+.env
+.env.*
+
+# Jupyter (if used)
+.ipynb_checkpoints/
+
+# MacOS / Linux / Windows
+.DS_Store
+Thumbs.db
+
+# VSCode / IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Models & cache
+model/*.pkl
+*.joblib
+*.sav
+.cache/
+*.db
+
+# Data
+data/*.csv
+data/*.txt
+data/*.json
+
+# PDF exports
+*.pdf
+
+# Python virtual environments
+venv/
+.env/
+.venv/
+env/
+
+# Uploaded user files
+uploads/
+resume_uploads/
