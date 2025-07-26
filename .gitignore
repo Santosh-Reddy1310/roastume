@@ -27,11 +27,6 @@ Thumbs.db
 *.log
 
 # Models & cache
-model/*.pkl
-*.joblib
-*.sav
-.cache/
-*.db
 
 # Data
 data/*.csv
