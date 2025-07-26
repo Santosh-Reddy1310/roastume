@@ -15,6 +15,27 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("models/gemini-1.5-flash")
 
+role_emojis = {
+    "HR": "🤝",
+    "Data Science": "📊",
+    "Advocate": "⚖️",
+    "Arts": "🎨",
+    "Web Designing": "💻",
+    "Mechanical Engineer": "⚙️",
+    "Sales": "💰",
+    "Health and fitness": "💪",
+    "Civil Engineer": "🏗️",
+    "Java Developer": "☕",
+    "Business Analyst": "📈",
+    "SAP Developer": "🖥️",
+    "Automation Testing": "🧪",
+    "Electrical Engineering": "⚡",
+    "Operations Manager": "🛠️",
+    "Python Developer": "🐍",
+    "DevOps Engineer": "☁️",
+    "Network Security Engineer": "🔒",
+    "PMO": "🗓️",
+    "Database": "🗄️"}
 st.set_page_config("Roastume", layout="wide", page_icon="🔥")
 
 # UI
@@ -44,7 +65,11 @@ if uploaded_file:
     col3, col4 = st.columns(2)
     col3.metric("ATS Score", f"{score}/100")
     col3.progress(score)
-    col4.success(f"🧠 ML predicts: **{category}** resume")
+    if category == "Unknown":
+        st.warning("🤔 Couldn't confidently predict resume category.")
+    else:
+        emoji = role_emojis.get(category, "🧠")
+        st.success(f"{emoji} ML predicts: **{category}** resume")
 
     st.markdown("## 🤖 AI’s Feedback")
     with st.spinner("Roasting your resume..."):
