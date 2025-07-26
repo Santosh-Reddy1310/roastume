@@ -75,18 +75,24 @@ if uploaded_file:
     st.markdown("## 🤖 AI’s Feedback")
     with st.spinner("Roasting your resume..."):
         prompt = TONE_PROMPTS[tone].replace("{text}", resume_text)
+        response = None  # initialize
+
         try:
             response = model.generate_content(prompt)
         except Exception as e:
             if "429" in str(e):
-                st.warning("⚠️ Gemini API rate limit hit. Please wait a few seconds and try again.")
-                st.caption("Free tier allows ~15 requests per minute. Upgrade if needed.")
-                time.sleep(15)  # Optional delay
+                st.warning("⚠️ Gemini API rate limit hit. Please wait and try again.")
             else:
                 st.error("💥 Gemini API call failed.")
                 st.exception(e)
-        st.markdown(f"""<div class="roast-card"><h4>🗣️ Feedback – <span style='color:#4ade80'>{tone}</span></h4><p>{response.text.replace('\n', '<br>')}</p></div>""", unsafe_allow_html=True)
 
+        if response:
+            st.markdown(f"""
+            <div class="roast-card">
+            <h4>🗣️ Feedback – <span style='color:#4ade80'>{tone}</span></h4>
+            <p style='line-height:1.6'>{response.text.replace('\n', '<br>')}</p>
+            </div>
+            """, unsafe_allow_html=True)
     st.markdown("## ✨ Download AI-Improved Resume")
     rewrite_prompt = generate_rewrite_prompt(resume_text, tone)
     with st.spinner("Rewriting your resume..."):
